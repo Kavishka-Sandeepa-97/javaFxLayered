@@ -1,7 +1,9 @@
 package Controller;
 
+import boService.BoFactory;
 import boService.Custom.CustomerBo;
 import boService.Custom.impl.CustomerBoImpl;
+import dao.utill.BoType;
 import dto.CustomerDto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -63,7 +65,7 @@ public class CustomerFormController {
     @FXML
     private Button btnSave;
 
-    private CustomerBo customerBo= new CustomerBoImpl();
+    private CustomerBo customerBo= BoFactory.getInstance().getBo(BoType.CUSTOMER);
 
     public void initialize() {
 
