@@ -103,7 +103,7 @@ public class PlaceOrderForm {
     private void loadCustomerIds() {
         ObservableList<String> dto = FXCollections.observableArrayList();
         try {
-            custlist = customerDao.allCustomer();
+            custlist = customerDao.getAll();
             for (CustomerDto x : custlist) {
                 dto.add(x.getId());
             }

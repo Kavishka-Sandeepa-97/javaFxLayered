@@ -1,5 +1,7 @@
 package Controller;
 
+import boService.Custom.CustomerBo;
+import boService.Custom.impl.CustomerBoImpl;
 import dto.CustomerDto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -61,7 +63,7 @@ public class CustomerFormController {
     @FXML
     private Button btnSave;
 
-    private CustomerDao customerDao =new CustomerDaoImpl();
+    private CustomerBo<CustomerDto> customerBo= new CustomerBoImpl();
 
     public void initialize() {
 
@@ -93,7 +95,7 @@ public class CustomerFormController {
         ObservableList<CustomerTm> tmList = FXCollections.observableArrayList();
 
         try {
-            for (CustomerDto dto : customerDao.allCustomer()) {
+            for (CustomerDto dto : customerBo.allCustomer()) {
                 Button btn=new Button("delete");
                 CustomerTm tm=new CustomerTm(
                         dto.getId(),
@@ -117,7 +119,7 @@ public class CustomerFormController {
 
         boolean res= false;
         try {
-            res = customerDao.deleteCustomer(id);
+            res = customerBo.deleteCustomer(id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
@@ -149,7 +151,7 @@ public class CustomerFormController {
     public void updateButtonOnAction(javafx.event.ActionEvent actionEvent) {
         boolean res;
         try {
-             res = customerDao.updateCustomer(new CustomerDto(
+             res = customerBo.updateCustomer(new CustomerDto(
                     textID.getText(),
                     textName.getText(),
                     textAddress.getText(),
@@ -175,7 +177,7 @@ public class CustomerFormController {
     public void saveButtonOnAction(javafx.event.ActionEvent actionEvent) {
 
         try {
-            boolean isSaved= customerDao.saveCustomer(new CustomerDto(
+            boolean isSaved= customerBo.saveCustomer(new CustomerDto(
                     textID.getText(), textName.getText(),textAddress.getText(),Double.parseDouble(textSalary.getText())
             ));
             if (isSaved) {
