@@ -2,7 +2,6 @@ package Controller;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import db.DBConnection;
 import dto.CustomerDto;
 import dto.ItemDto;
 import dto.OrderDetailsDto;
@@ -17,18 +16,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.stage.Stage;
-import model.CustomerModel;
-import model.ItemModel;
-import model.OrderModel;
-import model.impl.CustomerImpl;
-import model.impl.ItemModelImpl;
-import model.impl.OrderModelImpl;
+import dao.custom.CustomerDao;
+import dao.custom.ItemDao;
+import dao.custom.OrderDao;
+import dao.custom.impl.CustomerDaoImpl;
+import dao.custom.impl.ItemDaoImpl;
+import dao.custom.impl.OrderDaoImpl;
 
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -61,13 +57,13 @@ public class PlaceOrderForm {
     private JFXComboBox cmbCustomerId;
     @FXML
     private JFXComboBox cmbItemCode;
-    private CustomerModel customerModel;
-    private ItemModel itemModel;
+    private CustomerDao customerDao;
+    private ItemDao itemDao;
     private List<CustomerDto> custlist;
     private List<ItemDto> itemlist;
     private ObservableList<OrderTm> tmOrderList = FXCollections.observableArrayList();
     private double totalAmount = 0.00;
-    private OrderModel orderModel = new OrderModelImpl();
+    private OrderDao orderDao = new OrderDaoImpl();
 
     public void initialize() {
 
@@ -77,8 +73,8 @@ public class PlaceOrderForm {
         colAmount.setCellValueFactory(new TreeItemPropertyValueFactory<>("amount"));
         colOption.setCellValueFactory(new TreeItemPropertyValueFactory<>("btn"));
 
-        customerModel = new CustomerImpl();
-        itemModel = new ItemModelImpl();
+        customerDao = new CustomerDaoImpl();
+        itemDao = new ItemDaoImpl();
         loadCustomerIds();
         loadItemeCodes();
         cmbCustomerId.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
@@ -107,7 +103,7 @@ public class PlaceOrderForm {
     private void loadCustomerIds() {
         ObservableList<String> dto = FXCollections.observableArrayList();
         try {
-            custlist = customerModel.allCustomer();
+            custlist = customerDao.allCustomer();
             for (CustomerDto x : custlist) {
                 dto.add(x.getId());
             }
@@ -123,7 +119,7 @@ public class PlaceOrderForm {
 
         ObservableList<String> dto = FXCollections.observableArrayList();
         try {
-            itemlist = itemModel.allItem();
+            itemlist = itemDao.allItem();
             for (ItemDto x : itemlist) {
                 dto.add(x.getItemCode());
             }
@@ -150,7 +146,7 @@ public class PlaceOrderForm {
 
         String id = cmbItemCode.getValue().toString();
         try {
-            int qtyOnHand = itemModel.getItem(id).getQty();
+            int qtyOnHand = itemDao.getItem(id).getQty();
 
             if (qtyOnHand < Integer.parseInt(txtQty.getText())) {
                 new Alert(Alert.AlertType.ERROR, "Insuficent Quantity").show();
@@ -214,7 +210,7 @@ public class PlaceOrderForm {
 
     public void orderIdGenarate() {
         try {
-            OrderDto orderDto = orderModel.lastOrder();
+            OrderDto orderDto = orderDao.lastOrder();
             if (orderDto == null) {
                 lblOrderId.setText("D001");
             } else {
@@ -246,7 +242,7 @@ public class PlaceOrderForm {
  //       if (!tmOrderList.isEmpty()) {
             boolean isSaved = false;
             try {
-                isSaved = orderModel.saveOrder(
+                isSaved = orderDao.saveOrder(
                         new OrderDto(
                                 lblOrderId.getText(),
                                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("YY-MM-dd")),

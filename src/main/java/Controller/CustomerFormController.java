@@ -1,6 +1,5 @@
 package Controller;
 
-import db.DBConnection;
 import dto.CustomerDto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,8 +11,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import dto.tm.CustomerTm;
-import model.CustomerModel;
-import model.impl.CustomerImpl;
+import dao.custom.CustomerDao;
+import dao.custom.impl.CustomerDaoImpl;
 
 import java.io.IOException;
 import java.sql.*;
@@ -62,7 +61,7 @@ public class CustomerFormController {
     @FXML
     private Button btnSave;
 
-    private CustomerModel customerModel=new CustomerImpl();
+    private CustomerDao customerDao =new CustomerDaoImpl();
 
     public void initialize() {
 
@@ -94,7 +93,7 @@ public class CustomerFormController {
         ObservableList<CustomerTm> tmList = FXCollections.observableArrayList();
 
         try {
-            for (CustomerDto dto : customerModel.allCustomer()) {
+            for (CustomerDto dto : customerDao.allCustomer()) {
                 Button btn=new Button("delete");
                 CustomerTm tm=new CustomerTm(
                         dto.getId(),
@@ -118,7 +117,7 @@ public class CustomerFormController {
 
         boolean res= false;
         try {
-            res = customerModel.deleteCustomer(id);
+            res = customerDao.deleteCustomer(id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
@@ -150,7 +149,7 @@ public class CustomerFormController {
     public void updateButtonOnAction(javafx.event.ActionEvent actionEvent) {
         boolean res;
         try {
-             res = customerModel.updateCustomer(new CustomerDto(
+             res = customerDao.updateCustomer(new CustomerDto(
                     textID.getText(),
                     textName.getText(),
                     textAddress.getText(),
@@ -176,7 +175,7 @@ public class CustomerFormController {
     public void saveButtonOnAction(javafx.event.ActionEvent actionEvent) {
 
         try {
-            boolean isSaved=customerModel.saveCustomer(new CustomerDto(
+            boolean isSaved= customerDao.saveCustomer(new CustomerDto(
                     textID.getText(), textName.getText(),textAddress.getText(),Double.parseDouble(textSalary.getText())
             ));
             if (isSaved) {

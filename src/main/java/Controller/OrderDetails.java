@@ -2,9 +2,7 @@ package Controller;
 
 import dto.OrderDetailsDto;
 import dto.OrderDto;
-import dto.tm.CustomerTm;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,14 +12,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import model.OrderDetailsModel;
-import model.OrderModel;
-import model.impl.OrderDetailModelImpl;
-import model.impl.OrderModelImpl;
+import dao.custom.OrderDetailsDao;
+import dao.custom.OrderDao;
+import dao.custom.impl.OrderDetailDaoImpl;
+import dao.custom.impl.OrderDaoImpl;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 public class OrderDetails {
 
@@ -50,8 +47,8 @@ public class OrderDetails {
 
     @FXML
     private TableColumn colUnitePrice;
-    OrderModel orderModel = new OrderModelImpl();
-    OrderDetailsModel orderDetailsModel=new OrderDetailModelImpl();
+    OrderDao orderDao = new OrderDaoImpl();
+    OrderDetailsDao orderDetailsDao =new OrderDetailDaoImpl();
 
     public void initialize() {
 
@@ -79,7 +76,7 @@ public class OrderDetails {
         ObservableList<OrderDto> tmList = FXCollections.observableArrayList();
         try {
 
-            for (OrderDto orderDto : orderModel.allOrders()) {
+            for (OrderDto orderDto : orderDao.allOrders()) {
                 tmList.add(orderDto);
             }
             tblAllOrders.setItems(tmList);
@@ -96,7 +93,7 @@ public class OrderDetails {
 
         ObservableList<OrderDetailsDto> listOrderDetails = null;
         try {
-            listOrderDetails = orderDetailsModel.getOrderDetail((newValue.getOrderId()));
+            listOrderDetails = orderDetailsDao.getOrderDetail((newValue.getOrderId()));
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -1,9 +1,8 @@
-package model.impl;
+package dao.custom.impl;
 
 import db.DBConnection;
 import dto.ItemDto;
-import javafx.scene.control.Alert;
-import model.ItemModel;
+import dao.custom.ItemDao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemModelImpl implements ItemModel {
+public class ItemDaoImpl implements ItemDao {
 
     @Override
     public boolean saveItem(ItemDto dto) throws SQLException, ClassNotFoundException {
