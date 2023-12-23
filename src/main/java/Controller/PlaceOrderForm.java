@@ -1,5 +1,7 @@
 package Controller;
 
+import boService.Custom.CustomerBo;
+import boService.Custom.impl.CustomerBoImpl;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import dto.CustomerDto;
@@ -57,7 +59,7 @@ public class PlaceOrderForm {
     private JFXComboBox cmbCustomerId;
     @FXML
     private JFXComboBox cmbItemCode;
-    private CustomerDao customerDao;
+    private CustomerBo customerBo;
     private ItemDao itemDao;
     private List<CustomerDto> custlist;
     private List<ItemDto> itemlist;
@@ -73,7 +75,7 @@ public class PlaceOrderForm {
         colAmount.setCellValueFactory(new TreeItemPropertyValueFactory<>("amount"));
         colOption.setCellValueFactory(new TreeItemPropertyValueFactory<>("btn"));
 
-        customerDao = new CustomerDaoImpl();
+        customerBo = new CustomerBoImpl();
         itemDao = new ItemDaoImpl();
         loadCustomerIds();
         loadItemeCodes();
@@ -103,7 +105,7 @@ public class PlaceOrderForm {
     private void loadCustomerIds() {
         ObservableList<String> dto = FXCollections.observableArrayList();
         try {
-            custlist = customerDao.getAll();
+            custlist = customerBo.allCustomer();
             for (CustomerDto x : custlist) {
                 dto.add(x.getId());
             }

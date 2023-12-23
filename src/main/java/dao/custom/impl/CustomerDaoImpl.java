@@ -1,5 +1,6 @@
 package dao.custom.impl;
 
+import dao.utill.CrudUtil;
 import db.DBConnection;
 import dto.CustomerDto;
 import dao.custom.CustomerDao;
@@ -47,9 +48,10 @@ public class CustomerDaoImpl implements CustomerDao {
     public List<Customer> getAll() throws SQLException, ClassNotFoundException {
         List<Customer> list=new ArrayList<>();
         String sql = "select * from customer";
-        Connection conn= DBConnection.getInstance().getConnection();
-        PreparedStatement pstm= conn.prepareStatement(sql);
-        ResultSet rst = pstm.executeQuery();
+
+//        Connection conn= DBConnection.getInstance().getConnection();
+//        PreparedStatement pstm= conn.prepareStatement(sql);
+        ResultSet rst = CrudUtil.exicute(sql);
         while (rst.next()){
             list.add(new Customer(
                     rst.getString(1),

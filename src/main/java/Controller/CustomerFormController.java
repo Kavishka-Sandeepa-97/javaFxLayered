@@ -63,7 +63,7 @@ public class CustomerFormController {
     @FXML
     private Button btnSave;
 
-    private CustomerBo<CustomerDto> customerBo= new CustomerBoImpl();
+    private CustomerBo customerBo= new CustomerBoImpl();
 
     public void initialize() {
 
@@ -119,7 +119,7 @@ public class CustomerFormController {
 
         boolean res= false;
         try {
-            res = customerBo.deleteCustomer(id);
+            res = customerBo.deleteCustomer(id );
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
