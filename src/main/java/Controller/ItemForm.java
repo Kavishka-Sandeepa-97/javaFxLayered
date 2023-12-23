@@ -1,10 +1,13 @@
 package Controller;
 
+import boService.BoFactory;
+import boService.Custom.ItemBo;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import dao.utill.BoType;
 import db.DBConnection;
 import dto.ItemDto;
 import javafx.beans.value.ChangeListener;
@@ -75,7 +78,7 @@ public class ItemForm {
 
     @FXML
     private Button btnUpdate;
-    private ItemDao itemDao =new ItemDaoImpl();
+    private ItemBo itemBo = BoFactory.getInstance().getBo(BoType.ITEM);
 
 
     @FXML
@@ -121,7 +124,7 @@ public class ItemForm {
 
         boolean isSaved = false;
         try {
-            isSaved = itemDao.saveItem(new ItemDto(
+            isSaved = itemBo.saveItem(new ItemDto(
                    txtItemCode.getText(),
                    txtDescription.getText(),
                    Double.parseDouble(txtPrice.getText()),
@@ -193,7 +196,7 @@ public class ItemForm {
     private void deleteItem(String id) {
         boolean isDelete= false;
         try {
-            isDelete = itemDao.deleteItem(id);
+            isDelete = itemBo.deleteItem(id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
@@ -225,7 +228,7 @@ public class ItemForm {
     public void updateButtonOnAction(javafx.event.ActionEvent actionEvent) {
         boolean isUpdate = false;
         try {
-            isUpdate = itemDao.updateItem(new ItemDto(
+            isUpdate = itemBo.updateItem(new ItemDto(
                     txtItemCode.getText(),
                     txtDescription.getText(),
                     Double.parseDouble(txtPrice.getText()),

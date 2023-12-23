@@ -1,9 +1,12 @@
 package Controller;
 
+import boService.BoFactory;
 import boService.Custom.CustomerBo;
+import boService.Custom.ItemBo;
 import boService.Custom.impl.CustomerBoImpl;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import dao.utill.BoType;
 import dto.CustomerDto;
 import dto.ItemDto;
 import dto.OrderDetailsDto;
@@ -59,13 +62,15 @@ public class PlaceOrderForm {
     private JFXComboBox cmbCustomerId;
     @FXML
     private JFXComboBox cmbItemCode;
-    private CustomerBo customerBo;
-    private ItemDao itemDao;
+
+
     private List<CustomerDto> custlist;
     private List<ItemDto> itemlist;
     private ObservableList<OrderTm> tmOrderList = FXCollections.observableArrayList();
     private double totalAmount = 0.00;
     private OrderDao orderDao = new OrderDaoImpl();
+    private CustomerBo customerBo=BoFactory.getInstance().getBo(BoType.CUSTOMER);
+    private ItemBo itemBo= BoFactory.getInstance().getBo(BoType.ITEM);
 
     public void initialize() {
 
@@ -75,8 +80,7 @@ public class PlaceOrderForm {
         colAmount.setCellValueFactory(new TreeItemPropertyValueFactory<>("amount"));
         colOption.setCellValueFactory(new TreeItemPropertyValueFactory<>("btn"));
 
-        customerBo = new CustomerBoImpl();
-        itemDao = new ItemDaoImpl();
+
         loadCustomerIds();
         loadItemeCodes();
         cmbCustomerId.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
@@ -121,7 +125,7 @@ public class PlaceOrderForm {
 
         ObservableList<String> dto = FXCollections.observableArrayList();
         try {
-            itemlist = itemDao.allItem();
+            itemlist = itemBo.allItem();
             for (ItemDto x : itemlist) {
                 dto.add(x.getItemCode());
             }
@@ -148,7 +152,7 @@ public class PlaceOrderForm {
 
         String id = cmbItemCode.getValue().toString();
         try {
-            int qtyOnHand = itemDao.getItem(id).getQty();
+            int qtyOnHand = itemBo.getItem(id).getQty();
 
             if (qtyOnHand < Integer.parseInt(txtQty.getText())) {
                 new Alert(Alert.AlertType.ERROR, "Insuficent Quantity").show();
