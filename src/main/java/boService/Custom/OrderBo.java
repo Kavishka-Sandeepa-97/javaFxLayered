@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface OrderBo extends SuperBo {
 
-    public boolean saveOrder(OrderDto orderDto) throws SQLException;
+    public boolean saveOrder(OrderDto orderDto) throws SQLException, ClassNotFoundException;
     OrderDto lastOrder() throws SQLException, ClassNotFoundException;
 
     public List<OrderDto> allOrder() throws SQLException, ClassNotFoundException;

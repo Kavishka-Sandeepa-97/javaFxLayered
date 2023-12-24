@@ -260,8 +260,10 @@ public class PlaceOrderForm {
                 );
             } catch (SQLException e) {
                 throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
-            if(isSaved){
+        if(isSaved){
                 new Alert(Alert.AlertType.INFORMATION,"OrderSaved").show();
             }
      //   }

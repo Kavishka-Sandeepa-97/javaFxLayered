@@ -1,5 +1,6 @@
 package dao.custom.impl;
 
+import dao.utill.CrudUtil;
 import db.DBConnection;
 import dto.OrderDto;
 import dao.custom.OrderDetailsDao;
@@ -19,9 +20,8 @@ public class OrderDaoImpl implements OrderDao {
     public OrderDto lastOrder() throws SQLException, ClassNotFoundException {
         String sql="select * from orders ORDER BY OrderId DESC limit 1";
 
-            Connection connection= DBConnection.getInstance().getConnection();
-            PreparedStatement pstm=connection.prepareStatement(sql);
-            ResultSet res=pstm.executeQuery();
+        ResultSet res=CrudUtil.exicute(sql);
+
             while (res.next()){
                 return new OrderDto(
                         res.getString(1),
@@ -34,12 +34,9 @@ public class OrderDaoImpl implements OrderDao {
         return null;
     }
 
-
-
-
     @Override
-    public boolean saveOrder(OrderDto dto) throws SQLException{
-        OrderDetailsDao orderDetailsDao =new OrderDetailDaoImpl();
+    public boolean saveOrder(OrderDto dto) throws SQLException, ClassNotFoundException {
+        OrderDetailsDao orderDetailsModel=new OrderDetailDaoImpl();
         Connection connection=null;
         try {
             connection = DBConnection.getInstance().getConnection();
@@ -52,7 +49,7 @@ public class OrderDaoImpl implements OrderDao {
             pstm.setString(2, dto.getDate());
             pstm.setString(3, dto.getCustomerId());
             if (pstm.executeUpdate() > 0) {
-                boolean isSaved = orderDetailsDao.saveOrderDetails(dto.getList());
+                boolean isSaved = orderDetailsModel.saveOrderDetails(dto.getList());
                 if (isSaved) {
                     connection.commit();
                     return true;
@@ -73,9 +70,8 @@ public class OrderDaoImpl implements OrderDao {
     public List<Orders> getAll() throws SQLException, ClassNotFoundException {
         String sql="select * from orders";
         List<Orders> list=new ArrayList<>();
-        Connection connection= DBConnection.getInstance().getConnection();
-        PreparedStatement pstm=connection.prepareStatement(sql);
-        ResultSet res=pstm.executeQuery();
+
+        ResultSet res=CrudUtil.exicute(sql);
         while (res.next()){
             list.add( new Orders(
                     res.getString(1),

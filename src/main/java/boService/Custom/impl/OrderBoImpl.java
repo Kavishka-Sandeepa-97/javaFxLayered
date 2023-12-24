@@ -18,7 +18,7 @@ public class OrderBoImpl implements OrderBo {
 
     public OrderDao orderDao=DaoFactory.getInstance().getDao(DaoType.ORDER);
 
-    public boolean saveOrder(OrderDto orderDto) throws SQLException {
+    public boolean saveOrder(OrderDto orderDto) throws SQLException, ClassNotFoundException {
         return orderDao.saveOrder(orderDto);
     }
 

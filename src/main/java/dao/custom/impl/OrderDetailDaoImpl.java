@@ -2,6 +2,7 @@ package dao.custom.impl;
 
 import db.DBConnection;
 import dto.OrderDetailsDto;
+import entity.OrderDetail;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import dao.custom.OrderDetailsDao;
@@ -53,5 +54,25 @@ public class OrderDetailDaoImpl implements OrderDetailsDao {
 
         }
         return list;
+    }
+
+    @Override
+    public boolean save(OrderDetail entity) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(String value) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean update(OrderDetail entity) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public List<OrderDetail> getAll() throws SQLException, ClassNotFoundException {
+        return null;
     }
 }
