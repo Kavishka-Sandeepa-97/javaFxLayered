@@ -14,27 +14,27 @@
    <children>
       <ImageView fitHeight="448.0" fitWidth="734.0">
          <image>
-            <Image url="@../IMG/R.jpg" />
+            <Image url="@../img/r.jpg" />
          </image>
       </ImageView>
       <ImageView fitHeight="42.0" fitWidth="37.0" layoutX="175.0" layoutY="120.0">
          <image>
-            <Image url="@../IMG/OIP%20(1).jpg" />
+            <Image url="@../img/OI(1).jpg" />
          </image>
       </ImageView>
       <ImageView fitHeight="39.0" fitWidth="37.0" layoutX="175.0" layoutY="185.0">
          <image>
-            <Image url="@../IMG/R.png" />
+            <Image url="@../img/R.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="39.0" fitWidth="37.0" layoutX="175.0" layoutY="303.0">
          <image>
-            <Image url="@../IMG/195-1953240_complete-order-place-shopping-success-tick-icon-order.png" />
+            <Image url="@../img/195-1953240_complete-order-place-shopping-success-tick-icon-order.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="39.0" fitWidth="48.0" layoutX="179.0" layoutY="248.0">
          <image>
-            <Image url="@../IMG/3807716.png" />
+            <Image url="@../img/3807716.png" />
          </image>
       </ImageView>
       <Button layoutX="238.0" layoutY="125.0" mnemonicParsing="false" onAction="#customerButton" prefHeight="39.0" prefWidth="230.0" style="-fx-background-color: #0b9995;" text="Customer">
