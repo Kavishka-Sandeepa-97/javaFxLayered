@@ -1,5 +1,8 @@
 package Controller;
 
+import boService.BoFactory;
+import boService.Custom.OrderBo;
+import dao.utill.BoType;
 import dto.OrderDetailsDto;
 import dto.OrderDto;
 import javafx.collections.FXCollections;
@@ -47,8 +50,9 @@ public class OrderDetails {
 
     @FXML
     private TableColumn colUnitePrice;
-    OrderDao orderDao = new OrderDaoImpl();
+
     OrderDetailsDao orderDetailsDao =new OrderDetailDaoImpl();
+    private OrderBo orderBo= BoFactory.getInstance().getBo(BoType.ORDER);
 
     public void initialize() {
 
@@ -76,7 +80,7 @@ public class OrderDetails {
         ObservableList<OrderDto> tmList = FXCollections.observableArrayList();
         try {
 
-            for (OrderDto orderDto : orderDao.allOrders()) {
+            for (OrderDto orderDto : orderBo.allOrder()) {
                 tmList.add(orderDto);
             }
             tblAllOrders.setItems(tmList);

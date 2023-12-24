@@ -3,7 +3,9 @@ package Controller;
 import boService.BoFactory;
 import boService.Custom.CustomerBo;
 import boService.Custom.ItemBo;
+import boService.Custom.OrderBo;
 import boService.Custom.impl.CustomerBoImpl;
+import boService.Custom.impl.OrderBoImpl;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import dao.utill.BoType;
@@ -68,11 +70,11 @@ public class PlaceOrderForm {
     private List<ItemDto> itemlist;
     private ObservableList<OrderTm> tmOrderList = FXCollections.observableArrayList();
     private double totalAmount = 0.00;
-    private OrderDao orderDao = new OrderDaoImpl();
     private CustomerBo customerBo=BoFactory.getInstance().getBo(BoType.CUSTOMER);
     private ItemBo itemBo= BoFactory.getInstance().getBo(BoType.ITEM);
+    private OrderBo orderBo=BoFactory.getInstance().getBo(BoType.ORDER);
 
-    public void initialize() {
+    public void initialize(){
 
         colItemCode.setCellValueFactory(new TreeItemPropertyValueFactory<>("itemCode"));
         colDescription.setCellValueFactory(new TreeItemPropertyValueFactory<>("desc"));
@@ -216,7 +218,7 @@ public class PlaceOrderForm {
 
     public void orderIdGenarate() {
         try {
-            OrderDto orderDto = orderDao.lastOrder();
+            OrderDto orderDto = orderBo.lastOrder();
             if (orderDto == null) {
                 lblOrderId.setText("D001");
             } else {
@@ -248,7 +250,7 @@ public class PlaceOrderForm {
  //       if (!tmOrderList.isEmpty()) {
             boolean isSaved = false;
             try {
-                isSaved = orderDao.saveOrder(
+                isSaved = orderBo.saveOrder(
                         new OrderDto(
                                 lblOrderId.getText(),
                                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("YY-MM-dd")),
@@ -257,8 +259,6 @@ public class PlaceOrderForm {
                         )
                 );
             } catch (SQLException e) {
-                throw new RuntimeException(e);
-            } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
             if(isSaved){

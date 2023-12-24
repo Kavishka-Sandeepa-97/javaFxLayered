@@ -20,8 +20,10 @@ public class ItemDaoImpl implements ItemDao {
     public Item getItem(String id) throws SQLException, ClassNotFoundException {
         String sql="select * from item where itemCode=?";
 
-        PreparedStatement pstm=CrudUtil.exicute(sql);
+        Connection conn=DBConnection.getInstance().getConnection();
+        PreparedStatement pstm=conn.prepareStatement(sql);
         pstm.setString(1,id);
+
         ResultSet resultSet = pstm.executeQuery();
         if(resultSet.next()){
            return new Item(
